@@ -1,32 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux'
+
 import AlbumList from './AlbumList.js'
 import Login from './Login.js'
 import Register from './Register.js'
 
-export default class App extends React.Component {
+class App extends React.Component {
 //Bestemmer hvilken component som skal vises frem
 //State / Redux!
 
     constructor(props) {
         super(props);
-        this.state = {
-            user: undefined
-        };
-        this.handleClick = this.handleClick.bind(this);
+        this.logout = this.logout.bind(this);
         this.login = this.login.bind(this);
         this.register = this.register.bind(this);
     }
 
-    handleClick(){
-        this.setState({
-            user: undefined,
-            token: undefined
-        })
-    }
+
 
     login(username, password) {
         console.log('login called with', username, password);
         // send brukernavn og passord til serveren
+
         fetch('/login', {
             method: 'post',
             headers: {
@@ -52,15 +47,17 @@ export default class App extends React.Component {
             password
         };
 
-        this.setState({
-            user
-        })
+        this.props.setUser(user);
+    }
+
+    logout(){
+        this.props.setUser(undefined)
     }
 
     render() {
         const {
             user
-        } = this.state;
+        } = this.props;
 
         if (!user) {
             // return default page + login/register form
@@ -77,7 +74,7 @@ export default class App extends React.Component {
             return <div className="container">
                 <p>Hello, {JSON.stringify(user)}!</p>
                 <button className="btn btn-danger" onClick=
-                    {this.handleClick}> Log out</button>
+                    {this.logout}> Log out</button>
                 <hr/>
                 <AlbumList albums={this.props.albums} />
             </div>
@@ -86,5 +83,31 @@ export default class App extends React.Component {
 
     //https://matoski.com/article/jwt-express-node-mongoose/#jwt
     //https://hackhands.com/mongodb-crud-mvc-way-with-passport-authentication/
-
 }
+
+function mapStateToProps(state) {
+    console.log(state);
+    return {
+        user: state.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setUser: (user) => dispatch({
+            type: 'SET_USER',
+            data: user
+        }),
+        logout: () => dispatch({
+            type: 'LOGOUT',
+            data: undefined
+        })
+    };
+}
+
+const ConnectedApps = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
+
+export default ConnectedApps;
