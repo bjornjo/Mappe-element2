@@ -17,7 +17,7 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
-app.use(require('./api.js'));
+app.use(require('./src/server/api.js'));
 
 app.listen(3000, err => {
     if (err) {

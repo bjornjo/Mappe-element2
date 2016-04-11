@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/App.js';
-import Login from './components/Login.js';
+import App from './web/App.js';
+import Login from './web/Login.js';
 
 const container = document.getElementById('container');
 

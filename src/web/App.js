@@ -70,7 +70,7 @@ export default class App extends React.Component {
                 <Register onRegister=
                               {(username, password) => this.register(username, password)} />
                 <hr/>
-                <AlbumList albums={this.props.albums.slice(0,10)}/>
+                <AlbumList albums={this.props.albums}/>
             </div>
         } else {
             // return data for logged in user
@@ -83,4 +83,8 @@ export default class App extends React.Component {
             </div>
         }
     }
+
+    //https://matoski.com/article/jwt-express-node-mongoose/#jwt
+    //https://hackhands.com/mongodb-crud-mvc-way-with-passport-authentication/
+
 }
